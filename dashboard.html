@@ -1,0 +1,721 @@
+<?php
+include_once('include_pdo.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$ar_home_mobile = array(
+                    'HomePos'   => 0,
+                    'HomeNeg'   => 0,
+                    'MobilePos' => 0,
+                    'MobileNet' => 0
+                );
+//note: the order of this array determines the order of the list and graph
+$ar_race = array(	'L' => array('Latino/a', 'Latino/a', 0, 0), 
+					'B' => array('Black/African-American/African', 'Black/African-American/African', 0, 0), 
+					'F' => array('Filipino', 'Filipino', 0, 0), 
+					'A' => array('Arabic-speaking', 'Arabic-speaking', 0, 0), 
+					'M' => array('Mixed-race (2+)', 'Mixed-race', 0, 0), 
+					'T' => array('Total of other race categories', 'total of other race categories', 0, 0)
+			);
+
+$str_daterange = null;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Communities Fighting Covid</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/modern-business.css" rel="stylesheet">
+  <link href="css/modern-business-md.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
+
+   <!--PageCount-->
+   <?php if(isset($_GET['ShowCounter'])):?>
+      <a href='https://dissertation-writingservice.com/'>WritingService for Dissertations</a>
+ <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=d2706138816ca3b741ef9edcad110dad06aade54'></script>
+ <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/797845/t/0"></script>
+   <?php endif;?>
+
+
+    <style type="text/css"> 
+    svg {
+      font: 15px sans-serif;
+      shape-rendering: crispEdges;
+    }
+  
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+    }
+   
+    path.domain {
+      stroke: none;
+    }
+   
+    .y .tick line {
+      stroke: #ddd;
+    }
+
+    .small-text {
+        text-align: right;
+    }
+
+    
+    </style>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', {
+        hitType: 'pageview',
+        page: location.pathname
+      });
+
+
+    if (document.location.pathname.indexOf('user/' + userID) > -1) {
+    var page = document.location.pathname.replace('user/' + userID, 'user');
+
+    // Sets the page value on the tracker.
+    ga('set', 'page', page);
+
+    // Sending the pageview no longer requires passing the page
+    // value since it's now stored on the tracker object.
+    ga('send', 'pageview');
+    }
+
+
+    </script>
+
+</head>
+
+<body>
+    <!-- Navigation -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="front.html">Communities Fighting Covid</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="services.html">Services</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Tested Positive
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+              <a class="dropdown-item" href="quarantine.html">Quarantine</a>
+              <a class="dropdown-item" href="isolation.html">Isolation</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container" id="content">
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="my-4">Dashboard</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="front.html">Home</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Dashboard
+        </li>
+    </ol>
+    <!-- Image Header -->
+    <img class="img-fluid rounded mb-4" >
+
+    <h2>COVID-19 Testing Case Performance Dashboard</h2>
+    <?php
+	goal_meter();
+	student_dashboard();
+    home_mobile_totals();
+    ?>
+
+    <h2>COVID-19 Testing Case Performance Dashboard by Racial Demographics</h2>
+    <?php
+    race_totals();
+    ?>
+    <div class="col-md-6" style="display:inline-block">
+    <div class="chart" style="text-align:center; float:left; width:100;">
+
+        <h2>COVID-19 Testing Pie Chart</h2>
+        <?php
+        create_pie_chart();
+        ?>
+    </div>
+    </div>
+
+    <div style="margin: 50px 50px;">
+    <div style="display: inline-block; width: 100%;">
+    <h2>Positive Tests by Self-Identified Race</h2>
+
+	<!-- Create a div where the bar graph will take place -->
+    <div id="div_bar" style="width: 100%; font-family: arial;"></div>
+    <script>
+        
+        var margin = {top: 20, right: 160, bottom: 35, left: 30};
+
+        var width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+            var svg = d3.select("#div_bar")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        /* Data in strings like it would be if imported from a csv */
+        var data = [
+        { race: "Latino/a", positive: "<?php echo $ar_race['L'][3]?>"},
+        { race: "Black", positive: "<?php echo $ar_race['B'][3]?>"},
+        { race: "Filipino", positive: "<?php echo $ar_race['F'][3]?>"},
+        { race: "Arabic-speaking", positive: "<?php echo $ar_race['A'][3]?>"},
+        { race: "Mixed-race (2+)", positive: "<?php echo $ar_race['M'][3]?>"},
+        { race: "Total of other categories", positive: "<?php echo $ar_race['T'][3]?>"}
+        ];
+
+        // Transpose the data into layers
+        var keys= ["positive"];
+        var dataset = d3.stack().keys(keys)(data);
+
+        // Set x, y and colors
+        var x = d3.scaleBand()
+        .domain(data.map(function(d) { return d.race; }))
+        .range([10, width-10], 0.02);
+
+        var y = d3.scaleLinear()
+        .domain([0, d3.max(dataset, function(d) {  return d3.max(d, function(d) { return d[0] + d[1]; });  })])
+        .range([height, 0]); 
+
+        var colors = ["#bf3caf", "#ffe563", "#efa75f", "#ff7f41", "#41b6c4", "#1d91c0"];
+
+
+        // Define and draw axes
+        var yAxis = d3.axisLeft()
+        .scale(y)
+        .ticks(10)
+        .tickSize(-width, 0, 0)
+        .tickFormat( function(d) { return d } );
+
+        var xAxis = d3.axisBottom()
+        .scale(x)
+        .tickFormat(data.race); // change this to get x values to reflect new
+
+        svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+        svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+        // Create groups for each series, rects for each segment 
+        var groups = svg.selectAll("g.cost")
+        .data(dataset)
+        .enter().append("g")
+        .attr("class", "cost")
+        //.style("fill", function(d, i) { return colors[i]; })
+
+        var rect = groups.selectAll("rect")
+        .data(function(d) { return d; })
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return x(d.data.race) + 2; })
+        .attr("y", function(d) { return y(d[0] + d[1]); })
+        .attr("height", function(d) { return y(d[0]) - y(d[0] + d[1]); })
+        .attr("width", x.bandwidth() - 4)
+        .attr("fill", function(d, i) { return colors[i]; })
+        .on("mouseover", function() { tooltip.style("display", null); })
+        .on("mouseout", function() { tooltip.style("display", "none"); })
+        .on("mousemove", function(e,d) {
+            var xPosition = e.offsetX - margin.left + 10;
+            var yPosition = e.offsetY - margin.top - 10;
+            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+            tooltip.select("text").text(d[1]);
+        });
+
+        // Prep the tooltip bits, initial display is hidden
+        var tooltip = svg.append("g")
+        .attr("class", "tooltip")
+        .style("display", "none");
+            
+        tooltip.append("rect")
+        .attr("width", 30)
+        .attr("height", 20)
+        .attr("fill", "white")
+        .style("opacity", 0.5);
+
+        tooltip.append("text")
+        .attr("x", 15)
+        .attr("dy", "1.2em")
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold");
+    </script>
+
+    </div>
+    </div>
+    </div>
+
+
+        <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Communities Fighting COVID 2021</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+
+</body>
+
+<?php
+
+//**********
+
+function create_pie_chart(){
+    global $str_daterange;
+    global $ar_home_mobile;
+
+	//make sure you have enough colors to cover the total number of values
+	$ar_colors = array("#4472C4", "#ED7D31", "#A5A5A5", "#FFC000", "#a05d56");
+	
+	$ar_data = array(
+				'Home-Based Negative' 	=> $ar_home_mobile['HomeNeg'],
+				'Home-Based Positive' 	=> $ar_home_mobile['HomePos'],
+				'Mobile Negative'		=> $ar_home_mobile['MobileNeg'],
+				'Mobile Positive'		=> $ar_home_mobile['MobilePos']
+				);
+	
+	//create color string to be used in the javascript below
+	$str_colors = '';
+	foreach($ar_colors as $val){
+		if($str_colors == ''){
+			$str_colors .= '"'.$val.'"';
+		}else{
+			$str_colors .= ',"'.$val.'"';
+		}
+	}
+	?>
+
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+	<style type="text/css">
+		#div_legend{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.legend-item{
+			flex: 0 0 auto;
+			display: inline-block;
+			margin-right: 20px;
+			width: 150px;
+		}
+		.legend-color{
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+		}
+		.legend-text{
+			display: inline-block;
+			white-space: no-wrap;
+			font-size: 12px;
+		}
+	</style>
+	
+    <p class="small-text"><small><?php echo $str_daterange?></small></p>
+
+	<!-- Create a div where the graph will take place -->
+    <div id="div_chart" style="width: 90%; font-family: arial;"></div>
+	<div id="div_legend" style="width: 90%; font-family: arial;">
+		<?php
+		$i = 0;
+		foreach($ar_data as $key => $val){
+			?>
+			<div class="legend-item">
+				<div class="legend-color" style="background: <?php echo $ar_colors[$i]?>"></div>
+				<div class="legend-text"><?php echo $key?></div>
+			</div>
+			<?php
+			$i++;
+		}
+		?>
+	</div>
+
+	<script>
+	// set the dimensions based upon the container width
+	var element = d3.select('#div_chart').node();
+		
+	var width = element.getBoundingClientRect().width;
+	var height = width;
+	var margin = 40;
+
+	// The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+	var radius = Math.min(width, height) / 2 - margin
+
+	// append the svg object to the div called 'div_chart'
+	var svg = d3.select("#div_chart")
+		.append("svg")
+			.attr("width", '100%')
+			.attr("height", '100%')
+			.attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
+			.attr('preserveAspectRatio','xMinYMin')
+			.append("g")
+				.attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
+
+	// Create dummy data
+	//var data = {a: 1800, b: 600, c:500, d:300}
+	var data = <?php echo json_encode($ar_data);?>;
+
+	// set the color scale
+	/*	auto
+	var color = d3.scaleOrdinal()
+	  .domain(data)
+	  .range(d3.schemeSet2);
+	  */
+	  
+	/* manual */
+	var color = d3.scaleOrdinal()
+		.domain(data)
+		.range([<?php echo $str_colors?>])
+
+	// Compute the position of each group on the pie:
+	var pie = d3.pie()
+	  .value(function(d) {return d.value; })
+	var data_ready = pie(d3.entries(data))
+	// Now I know that group A goes from 0 degrees to x degrees and so on.
+
+	// shape helper to build arcs:
+	var arcGenerator = d3.arc()
+	  .innerRadius(0)
+	  .outerRadius(radius)
+
+	// Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+	svg
+	  .selectAll('mySlices')
+	  .data(data_ready)
+	  .enter()
+	  .append('path')
+		.attr('d', arcGenerator)
+		.attr('fill', function(d){ return(color(d.data.key)) })
+		.attr("stroke", "white")
+		.style("stroke-width", "2px")
+		.style("opacity", 0.7)
+
+	// Now add the annotation. Use the centroid method to get the best coordinates
+	svg
+	  .selectAll('mySlices')
+	  .data(data_ready)
+	  .enter()
+	  .append('text')
+	  .text(function(d){ return d.data.value})
+	  .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
+	  .style("text-anchor", "middle")
+	  .style("font-size", 17)
+
+	</script>
+
+	</html>
+	<?php
+}
+
+//**********
+
+function home_mobile_totals(){
+    global $pdo;
+    global $ar_home_mobile;
+    global $str_daterange;
+
+    $sql = 
+    "Select     Min(CDate) As MinDate, Max(CDate) As MaxDate, 
+                Sum(Case When Site = 0 And Result = 'Positive' Then 1 Else 0 End) As HomePositive,
+                Sum(Case When Site = 0 And Result = 'Negative' Then 1 Else 0 End) As HomeNegative,
+                Sum(Case When Site = 1 And Result = 'Positive' Then 1 Else 0 End) As MobilePositive,
+                Sum(Case When Site = 1 And Result = 'Negative' Then 1 Else 0 End) As MobileNegative
+    From        (
+                Select     site, Case   When pcrResult Is Not Null Then pcrResult
+                                        When antigenResult Is Not Null Then antigenResult
+                                        Else ''
+                                        End as Result, 
+                            str_to_date(antigenCollectiondDate, '%m/%d/%Y') As CDate
+                From        radxdash
+				Where		Site In (0,1)
+                ) As A";
+
+    $stmt = $pdo->prepare($sql);
+    $params = array();
+    if(!$stmt->execute($params)){
+        print_r($stmt->errorInfo());
+    }
+    $row = $stmt->fetch();
+    $str_daterange = 'Data as of Date ' . $row['MaxDate'];
+    $ar_date_range[1] = $row['MaxDate'];
+    $ar_home_mobile['HomePos'] = $row['HomePositive'];
+    $ar_home_mobile['HomeNeg'] = $row['HomeNegative'];
+    $ar_home_mobile['MobilePos'] = $row['MobilePositive'];
+    $ar_home_mobile['MobileNeg'] = $row['MobileNegative'];
+    ?>
+    <p><strong>The data below reflect COVID home-based and mobile tests performed across San Diego County</strong></p>
+    <p class="small-text"><small><?php echo $str_daterange?></small></p>
+    <div class="feature-box-tan">
+        <table class="table table-bordered" style="height: 46px;" width="367">
+            <tbody>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;<?php echo $ar_home_mobile['HomePos']+$ar_home_mobile['HomeNeg']?></strong>
+                        </p>
+                        <p>
+                            Total Number of Home-based tests performed.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;<?php echo $ar_home_mobile['HomePos']?></strong>
+                        </p>
+                        <p>
+                            Total number of home-based positive COVID tests.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;<?php echo $ar_home_mobile['HomeNeg']?></strong>
+                        </p>
+                        <p>
+                            Total number of home-based negative COVID tests.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;<?php echo $ar_home_mobile['MobilePos']+$ar_home_mobile['MobileNeg']?></strong>
+                        </p>
+                        <p>
+                            Total number of Mobile tests for COVID performed
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;<?php echo $ar_home_mobile['MobilePos']?></strong>
+                        </p>
+                        <p>
+                            Total number of Mobile positive tests for COVID detected.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;<?php echo $ar_home_mobile['MobileNeg']?></strong>
+                        </p>
+                        <p>
+                            Total number of Mobile negative tests for COVID detected.
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <?php
+}
+
+//**********
+
+function race_totals(){
+    global $pdo;
+    global $str_daterange;
+    global $ar_race;
+
+    $sql = 
+    "Select    	Substring(Race, 1, 1) As Race, Count(*) As Total, Sum(Positive) As Positive
+    From        (
+                Select      Case    When language = 'Spanish' Or ethnicity = 'Hispanic' Then 'Latino/a'
+                                    When language = 'Tagalog' Or race = 'Filipino' Then 'Filipino'
+                                    When language = 'Arabic' Or race In ('Iraqi', 'Other Middle Eastern or North African') Then 'Arab-speaking'
+                                    When race = 'Black' Then 'Black/African-American/African'
+                                    When race = 'Mixed Race' Then 'Mixed-race (2+)'
+                                    Else 'Total of other categories'
+                                    End As Race,
+                            Case When pcrResult = 'Positive' Or (pcrResult Is Null and antigenResult = 'Positive') Then 1 Else 0 End As Positive
+                From        radxdash
+                ) A
+    Group By    Race";
+    $stmt = $pdo->prepare($sql);
+    $params = array();
+    if(!$stmt->execute($params)){
+        print_r($stmt->errorInfo());
+    }
+    ?>
+    <p><strong>The data below reflect the total number of COVID PCR tests by demographics</strong></p>
+    <p class="small-text"><small><?php echo $str_daterange?></small></p>
+    <div class="feature-box-tan">
+        <table class="table table-bordered" style="height: 46px;" width="367">
+            <tbody>
+                <?php
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $ar_race[$row['Race']][2] = $row['Total'];
+					$ar_race[$row['Race']][3] = $row['Positive'];
+				}
+
+				foreach($ar_race as $row){
+                    ?>
+                    <tr><td><p class="h3"><strong> &nbsp;<?php echo $row[0]?></strong></p></td>
+                    <td><p class="h3"><strong> &nbsp; &nbsp; &nbsp;<?php echo $row[2]?></strong></p>
+                        <p>Total number of COVID tests that were given.</p>
+                        </td>
+                    <td><p class="h3">
+                            <strong>
+                                &nbsp; &nbsp; &nbsp;
+                                <?php echo number_format($row[3]/$row[2]*100.0, 1)?>%
+                            </strong>
+                        </p>
+                        <p>Total proportion of tests positive among <?php echo $row[1]?>. </p>
+                        </td>
+                        </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+    <?php
+}
+
+//**********
+
+function goal_meter(){
+    global $pdo;
+
+	$int_goal = 10000;
+    $int_current = 0;
+
+    $sql = 
+    "Select    	Count(*) As Total
+    From        radxdash";
+    $stmt = $pdo->prepare($sql);
+    $params = array();
+    if(!$stmt->execute($params)){
+        print_r($stmt->errorInfo());
+		echo __line__;
+    }
+	$row = $stmt->fetch(pdo::FETCH_ASSOC);
+	$int_current = $row['Total'];
+	?>
+	<div class="jumbotron">
+	<h2>Goal: To <?php echo number_format($int_goal, 0)?> Tests</h2>
+	<div class="progress"  style="height:40px">
+	  <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo ($int_current/$int_goal*100) ?>%">
+		  Tests Performed So Far: <?php echo number_format($int_current, 0) ?>
+	  </div> <!--Tests Performed So Far will have the number performed, the blue bar will represent the percentage, which you can tweak with style="width:40%" if 4000 tests were performed. -->
+	</div>
+	</div>
+	<?php
+}
+
+//**********
+
+function student_dashboard(){
+	global $pdo;
+
+	$sql = 
+	"Select    	Sum(Case When studentstaff = 0 Then 1 Else 0 End) As Staff,
+				Sum(Case When studentstaff = 0 And (antigenResult = 'Positive' Or pcrResult = 'Positive') Then 1 Else 0 End) As StaffPositive,
+				Sum(Case When studentstaff = 1 Then 1 Else 0 End) As Student,
+				Sum(Case When studentstaff = 1 And (antigenResult = 'Positive' Or pcrResult = 'Positive') Then 1 Else 0 End) As StudentPositive
+	From        radxdash R
+	Where		site = 2";
+	$stmt = $pdo->prepare($sql);
+	$params = array();
+	if(!$stmt->execute($params)){
+		print_r($stmt->errorInfo());
+		echo __line__;
+	}
+
+	$row = $stmt->fetch();
+	?>
+	<h2>COVID-19 Testing Case Performance Dashboard</h2>
+      <p> <strong>The data below reflect COVID tests performed among School District Student and Staff</strong></p>
+      <div class="feature-box-tan">
+          <table class="table table-bordered" style="height: 46px;" width="367">
+              <tbody>
+                  <tr>
+                      <td>
+                          <p class="h3">
+                              <strong> &nbsp; &nbsp; &nbsp;<?php echo $row['Student']?></strong>
+                          </p>
+                          <p>
+                              Student total
+                          </p>
+                      </td>
+                      <td>
+                          <p class="h3">
+                              <strong> &nbsp; &nbsp; &nbsp;<?php echo $row['StudentPositive']?></strong>
+                          </p>
+                          <p>
+                              Student positives
+                          </p>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <p class="h3">
+                              <strong> &nbsp; &nbsp; &nbsp;<?php echo $row['Staff']?></strong>
+                          </p>
+                          <p>
+                              Staff total
+                          </p>
+                      </td>
+                      <td>
+                          <p class="h3">
+                              <strong> &nbsp; &nbsp; &nbsp;<?php echo $row['StaffPositive']?></strong>
+                          </p>
+                          <p>
+                              Staff positives
+                          </p>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+	<?php
+}
+
+//**********
+
+?>

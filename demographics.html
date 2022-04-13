@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Communities Fighting Covid</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/modern-business.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
+
+  <!--<script src=  
+      "https://d3js.org/d3.v6.min.js">  
+  </script> -->
+
+  <!--<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+
+
+    <style type="text/css"> 
+    svg {
+      font: 15px sans-serif;
+      shape-rendering: crispEdges;
+    }
+  
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+    }
+   
+    path.domain {
+      stroke: none;
+    }
+   
+    .y .tick line {
+      stroke: #ddd;
+    }
+
+    
+    </style>
+
+</head>
+
+<body>
+    <!-- Navigation -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="front.html">Communities Fighting Covid</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="demographics.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="services.html">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quarantine.html">Quarantine</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container" id="content">
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="my-4">Dashboard</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="front.html">Home</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Dashboard
+        </li>
+    </ol>
+    <!-- Image Header -->
+    <img class="img-fluid rounded mb-4" >
+
+    <h2>COVID-19 Testing Case Performance Dashboard</h2>
+    <p> The data below reflects the COVID tests among Home-based and Mobile-based tests performed by a general sample.</p>
+    <div class="feature-box-tan">
+        <table class="table table-bordered" style="height: 46px;" width="367">
+            <tbody>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;2512</strong>
+                        </p>
+                        <p>
+                            Total Number of Home-based tests performed.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;600</strong>
+                        </p>
+                        <p>
+                            Total number of home-based positive COVID tests.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;1800</strong>
+                        </p>
+                        <p>
+                            Total number of home-based negative COVID tests.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;800</strong>
+                        </p>
+                        <p>
+                            Total number of Mobile tests for COVID performed
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;300</strong>
+                        </p>
+                        <p>
+                            Total number of Mobile positive tests for COVID detected.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;500</strong>
+                        </p>
+                        <p>
+                            Total number of Mobile negative tests for COVID detected.
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>COVID-19 Testing Case Performance Dashboard by Racial Demographics</h2>
+    <p> The data below reflects the total number of COVID tests and PCR by demographics</p>
+    <div class="feature-box-tan">
+        <table class="table table-bordered" style="height: 46px;" width="367">
+            <tbody>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp;Latino/a</strong>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;600</strong>
+                        </p>
+                        <p>
+                            Total number of COVID tests that were given.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;1.7%</strong>
+                        </p>
+                        <p>
+                            Total positivity rate of COVID tests given.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp;Black/African-American/African</strong>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;500</strong>
+                        </p>
+                        <p>
+                            Total number of COVID tests that were given.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;1.4%</strong>
+                        </p>
+                        <p>
+                            Total positivity rate of COVID tests given.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp;Filipino</strong>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;600</strong>
+                        </p>
+                        <p>
+                            Total number of COVID tests that were given.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;1.7%</strong>
+                        </p>
+                        <p>
+                            Total positivity rate of COVID tests given.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp;Arabic-speaking</strong>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;500</strong>
+                        </p>
+                        <p>
+                            Total number of COVID tests that were given.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;1.1%</strong>
+                        </p>
+                        <p>
+                            Total positivity rate of COVID tests given.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp;Mixed-race (2+)</strong>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;700</strong>
+                        </p>
+                        <p>
+                            Total number of COVID tests that were given.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;1.2%</strong>
+                        </p>
+                        <p>
+                            Total positivity rate of COVID tests given.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp;Total of other race categories</strong>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;400</strong>
+                        </p>
+                        <p>
+                            Total number of COVID tests that were given.
+                        </p>
+                    </td>
+                    <td>
+                        <p class="h3">
+                            <strong> &nbsp; &nbsp; &nbsp;1.5%</strong>
+                        </p>
+                        <p>
+                            Total positivity rate of COVID tests given.
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6" style="display:inline-block">
+    <div class="chart" style="text-align:center; float:left;">
+    <h2>COVID-19 Testing Pie Chart</h2>
+
+    <svg width="300" height="300"> 
+    </svg>
+
+    <script>
+
+        var data = [600,1800,300,500]; 
+        
+        // Selecting SVG using d3.select() 
+        var svg = d3.select("svg"); 
+            
+        // Creating Pie generator 
+        var pie = d3.pie(); 
+
+        // Creating arc 
+        var arc = d3.arc() 
+                    .innerRadius(0) 
+                    .outerRadius(100); 
+
+        let g = svg.append("g") 
+                    .attr("transform", "translate(150,120)"); 
+
+        // Grouping different arcs 
+        var arcs = g.selectAll("arc") 
+                    .data(pie(data)) 
+                    .enter() 
+                    .append("g"); 
+
+        // Appending path  
+        arcs.append("path") 
+            .attr("fill", (data, i)=>{ 
+                let value=data.data; 
+                return d3.schemeSet3[i+1]; 
+            }) 
+            .attr("d", arc); 
+            
+        // Adding data to each arc 
+        arcs.append("text") 
+            .attr("transform",(d)=>{  
+                    return "translate("+  
+                    arc.centroid(d) + ")";  
+            }) 
+            .text(function(d){ 
+                return d.data;  
+                }); 
+                
+
+    </script>
+
+    </div>
+    </div>
+
+
+    <!-- Create a div where the graph will take place -->
+
+
+    <div class="col-md-6" style="display:inline-block">
+    <div class="chart" style="text-align:center; float:left;">
+
+    <h2>Test Positivity of Racial Groups Stacked Chart</h2>
+
+
+
+        <script>
+
+        var margin = {top: 20, right: 160, bottom: 35, left: 30};
+
+        var width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        /* Data in strings like it would be if imported from a csv */
+
+        var data = [
+        { race: "Latino/a", positive: "60", total: "600"},
+        { race: "Black", positive: "58", total: "500"},
+        { race: "Filipino", positive: "85", total: "600"},
+        { race: "Arab", positive: "56", total: "500"},
+        { race: "Mixed-race (2+)", positive: "89", total: "700"},
+        { race: "Total of other categories", positive: "62", total: "400"}
+        ];
+
+
+        // Transpose the data into layers
+        var keys= ["positive", "total"];
+        var dataset = d3.stack().keys(keys)(data);
+
+        // Set x, y and colors
+        var x = d3.scaleBand()
+        .domain(data.map(function(d) { return d.race; }))
+        .range([10, width-10], 0.02);
+
+        var y = d3.scaleLinear()
+        .domain([0, d3.max(dataset, function(d) {  return d3.max(d, function(d) { return d[0] + d[1]; });  })])
+        .range([height, 0]);
+
+        var colors = ["b33040", "#d25c4d"];
+
+
+        // Define and draw axes
+        var yAxis = d3.axisLeft()
+        .scale(y)
+        .ticks(10)
+        .tickSize(-width, 0, 0)
+        .tickFormat( function(d) { return d } );
+
+        var xAxis = d3.axisBottom()
+        .scale(x)
+        .tickFormat(data.race); // change this to get x values to reflect new
+
+        svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+        svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+
+        // Create groups for each series, rects for each segment 
+        var groups = svg.selectAll("g.cost")
+        .data(dataset)
+        .enter().append("g")
+        .attr("class", "cost")
+        .style("fill", function(d, i) { return colors[i]; })
+        
+
+
+        var rect = groups.selectAll("rect")
+        .data(function(d) { return d; })
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return x(d.data.race) + 2; })
+        .attr("y", function(d) { return y(d[0] + d[1]); })
+        .attr("height", function(d) { return y(d[0]) - y(d[0] + d[1]); })
+        .attr("width", x.bandwidth() - 4)
+        .on("mouseover", function() { tooltip.style("display", null); })
+        .on("mouseout", function() { tooltip.style("display", "none"); })
+        .on("mousemove", function(e,d) {
+            var xPosition = e.offsetX - margin.left + 10;
+            var yPosition = e.offsetY - margin.top - 10;
+            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+            tooltip.select("text").text(d[1]);
+        });
+
+
+        // Draw legend
+        var legend = svg.selectAll(".legend")
+        .data(colors)
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) { return "translate(30," + i * 19 + ")"; });
+        
+        legend.append("rect")
+        .attr("x", width - 18)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function(d, i) {return colors.slice().reverse()[i];});
+        
+        legend.append("text")
+        .attr("x", width + 5)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .text(function(d, i) { 
+            switch (i) {
+            case 0: return "Total Cases";
+            case 1: return "Positive Cases";
+            }
+        });
+
+
+        // Prep the tooltip bits, initial display is hidden
+        var tooltip = svg.append("g")
+        .attr("class", "tooltip")
+        .style("display", "none");
+            
+        tooltip.append("rect")
+        .attr("width", 30)
+        .attr("height", 20)
+        .attr("fill", "white")
+        .style("opacity", 0.5);
+
+        tooltip.append("text")
+        .attr("x", 15)
+        .attr("dy", "1.2em")
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold");
+
+        </script>
+
+    </div>
+    </div>
+    </div>
+
+        <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Communities Fighting COVID 2021</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+
+</body>
